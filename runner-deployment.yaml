@@ -1,0 +1,32 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: k8s-runner-deployment
+  namespace: actions
+spec:
+  template:
+    spec:
+      repository: HV-Hung/learn-github-action-2
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: k8s-runner-deployment-autoscaler
+  namespace: actions
+spec:
+  # Runners in the targeted RunnerDeployment won't be scaled down
+  # for 5 minutes instead of the default 10 minutes now
+  scaleDownDelaySecondsAfterScaleOut: 120
+  scaleTargetRef:
+    kind: RunnerDeployment
+    # # In case the scale target is RunnerSet:
+    # kind: RunnerSet
+    name: k8s-runner-deployment
+  minReplicas: 0
+  maxReplicas: 5
+  metrics:
+  - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
+    scaleUpThreshold: '0.1'
+    scaleDownThreshold: '0'
+    scaleUpFactor: '2'
+    scaleDownFactor: '0.5'

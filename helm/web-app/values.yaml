@@ -1,0 +1,5 @@
+webName: web
+webService: web-service
+image:
+  repository: hung6876/my-image
+  tag: 0168cfd
