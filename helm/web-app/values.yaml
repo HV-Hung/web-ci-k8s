@@ -2,4 +2,4 @@ webName: web
 webService: web-service
 image:
   repository: hung6876/my-image
-  tag: 9506a8e
+  tag: 0102385
